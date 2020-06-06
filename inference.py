@@ -26,6 +26,9 @@ import os
 import sys
 import logging as log
 from openvino.inference_engine import IENetwork, IECore
+import cv2
+import utils
+import logging as log
 
 
 class Network:
@@ -35,21 +38,58 @@ class Network:
     """
 
     def __init__(self):
-        ### TODO: Initialize any class variables desired ###
 
-    def load_model(self):
-        ### TODO: Load the model ###
-        ### TODO: Check for supported layers ###
-        ### TODO: Add any necessary extensions ###
-        ### TODO: Return the loaded inference plugin ###
-        ### Note: You may need to update the function parameters. ###
-        return
+        #Initializing class variables
+        self.ie = None
+        self.network = None
+
+        self.input_blob = None
+        self.output_blob = None
+
+        self.exec_network = None
+        self.infer_request = None
+        return 
+
+    def load_model(self, model, device="CPU", cpu_extension=None):
+      
+        #Loading the model
+        log.info('Initiating IE core....')
+        startTime = cv2.getTickCount()
+        self.ie = IECore()
+        self.network = self.ie.read_network(model=utils.getMOFiles(model)['model'], weights=utils.getMOFiles(model)['weights'])
+        log.info('Model metadata read Sucessfully')
+        
+        #Checking for supported layers
+        if not utils.isLayersSupported(self.ie,self.network,device):
+            log.error('Cannot continue due to unsupported layers. Check if extension exist !!  Exiting....')
+            exit(1)
+
+        #Adding any necessary extensions ###
+        if cpu_extension and "CPU" in device:
+            self.ie.add_extension(cpu_extension, device)
+
+        # Load the IENetwork into the plugin
+        log.info('Initiating Model loading....')
+        startTime = cv2.getTickCount()
+        self.exec_network = self.ie.load_network(network=self.network, device_name=device,num_requests=0)
+        log.info(f'Model Loaded in {(cv2.getTickCount()-startTime)/cv2.getTickFrequency()} seconds')
+        
+        # Get the input layer
+        self.input_blob = next(iter(self.network.inputs))
+        log.info("%s", self.input_blob)
+
+        self.output_blob = next(iter(self.network.outputs))
+        log.info("%s", self.output_blob)
+
+        # Returning the loaded inference engine
+        log.info("IR successfully loaded into Inference Engine.")
+        return self.exec_network
 
     def get_input_shape(self):
-        ### TODO: Return the shape of the input layer ###
-        return
+        # Returning the shape of the input layer ###
+        return self.network.inputs[self.input_blob].shape
 
-    def exec_net(self):
+    def exec_net(self,image):
         ### TODO: Start an asynchronous request ###
         ### TODO: Return any necessary information ###
         ### Note: You may need to update the function parameters. ###
@@ -59,9 +99,9 @@ class Network:
         ### TODO: Wait for the request to be complete. ###
         ### TODO: Return any necessary information ###
         ### Note: You may need to update the function parameters. ###
-        return
+        return 
 
     def get_output(self):
         ### TODO: Extract and return the output results
         ### Note: You may need to update the function parameters. ###
-        return
+        return 
