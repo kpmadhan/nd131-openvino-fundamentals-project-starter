@@ -68,7 +68,7 @@ class Network:
         if cpu_extension and "CPU" in device:
             self.ie.add_extension(cpu_extension, device)
 
-        # Load the IENetwork into the plugin
+        # Load the IENetwork
         log.info('Initiating Model loading....')
         startTime = cv2.getTickCount()
         self.exec_network = self.ie.load_network(network=self.network, device_name=device,num_requests=0)
