@@ -33,6 +33,11 @@ import paho.mqtt.client as mqtt
 from argparse import ArgumentParser
 from inference import Network
 
+import utils
+from utils import release , drawBBoxes
+
+log.basicConfig(level=log.INFO)
+
 # MQTT server environment variables
 HOSTNAME = socket.gethostname()
 IPADDRESS = socket.gethostbyname(HOSTNAME)
@@ -69,52 +74,101 @@ def build_argparser():
 
 
 def connect_mqtt():
-    ### TODO: Connect to the MQTT client ###
-    client = None
+    # Connect to the MQTT client
+
+    client =  mqtt.Client()
+    client.connect(MQTT_HOST, MQTT_PORT, MQTT_KEEPALIVE_INTERVAL)
 
     return client
 
-
 def infer_on_stream(args, client):
-    """
-    Initialize the inference network, stream video to network,
-    and output stats and video.
 
-    :param args: Command line arguments parsed by `build_argparser()`
-    :param client: MQTT client
-    :return: None
-    """
+    isImage = False
+
+    # Handle the input stream 
+    assert os.path.isfile(args.input)
+    
+
+    if args.input == 'CAM':
+        args.input = 0
+    elif args.input.endswith(('.jpg', '.bmp', '.png')):
+        isImage = True
+
+
+    
+
     # Initialise the class
     infer_network = Network()
+
     # Set Probability threshold for detections
     prob_threshold = args.prob_threshold
 
-    ### TODO: Load the model through `infer_network` ###
+    # Load the model through `infer_network` 
+    infer_network.load_model(args.model, args.device, args.cpu_extension)
+   
+    
+    cap = cv2.VideoCapture(args.input)
+    cap.open(args.input)
 
-    ### TODO: Handle the input stream ###
+    if not cap.isOpened():
+        log.error("ERROR! Unable to open video source")
+        exit(1)
 
-    ### TODO: Loop until stream is over ###
+    w,h = utils.getSrcDim(cap) #dimensions from the captured source
 
-        ### TODO: Read from the video capture ###
+    if not isImage:
+        out = cv2.VideoWriter('output/out.mp4',utils.getCODEC(), cap.get(cv2.CAP_PROP_FPS), (w,h))
+    else:
+        out = None
 
-        ### TODO: Pre-process the image as needed ###
 
-        ### TODO: Start asynchronous inference for specified request ###
+    #Loop until stream is over
+    while cap.isOpened():
+        # Read from the video capture 
+        flag, frame = cap.read()
+        if not flag:
+            break
+        key_pressed = cv2.waitKey(60)
 
-        ### TODO: Wait for the result ###
+        # Pre-process the image as needed 
+        p_frame = utils.preprocessed_input(infer_network,frame)
 
-            ### TODO: Get the results of the inference request ###
+        # Start asynchronous inference for specified request 
+        inf_start = time.time()
+        infer_network.exec_net(p_frame,request_id=0)
 
-            ### TODO: Extract any desired stats from the results ###
+        # Wait for the result 
+        if infer_network.wait(request_id=0) == 0:
+            det_time = time.time() - inf_start
 
-            ### TODO: Calculate and send relevant information on ###
-            ### current_count, total_count and duration to the MQTT server ###
-            ### Topic "person": keys of "count" and "total" ###
-            ### Topic "person/duration": key of "duration" ###
+            # Get the results of the inference request 
+            result = infer_network.get_output(request_id=0)
 
-        ### TODO: Send the frame to the FFMPEG server ###
+            # Extract any desired stats from the results 
+            frame, count = drawBBoxes(frame, result, prob_threshold, w, h)
 
-        ### TODO: Write an output image if `single_image_mode` ###
+            # Calculate and send relevant information on 
+            inf_time_message = "Inference time: {:.3f}ms".format(det_time * 1000)
+            cv2.putText(frame, inf_time_message, (15, 15),cv2.FONT_HERSHEY_COMPLEX, 0.5, (200, 10, 10), 1)
+
+           
+
+       
+            if key_pressed == 27:
+                break
+
+        # Send the frame to the FFMPEG server 
+        sys.stdout.buffer.write(frame)  
+        sys.stdout.flush()
+
+        # Write an output image if `single_image_mode` 
+        if isImage:
+            cv2.imwrite('output/output_image.jpg', frame)
+        else:
+            out.write(frame)
+
+    release(out,cap,client)
+
 
 
 def main():
@@ -129,6 +183,8 @@ def main():
     client = connect_mqtt()
     # Perform inference on the input stream
     infer_on_stream(args, client)
+
+  
 
 
 if __name__ == '__main__':
