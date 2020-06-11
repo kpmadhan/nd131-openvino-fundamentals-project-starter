@@ -27,6 +27,8 @@ import socket
 import json
 import cv2
 
+import numpy as np
+
 import logging as log
 import paho.mqtt.client as mqtt
 
@@ -34,6 +36,9 @@ from argparse import ArgumentParser
 from inference import Network
 
 import utils
+from transitions import Machine
+from durationStateMachine import durationSM
+
 from utils import release , drawBBoxes
 
 log.basicConfig(level=log.INFO)
@@ -44,6 +49,10 @@ IPADDRESS = socket.gethostbyname(HOSTNAME)
 MQTT_HOST = IPADDRESS
 MQTT_PORT = 3001
 MQTT_KEEPALIVE_INTERVAL = 60
+
+frame_state = durationSM()
+machine = Machine(frame_state, ['PersonIn', 'PersonOut'], initial='PersonOut')
+machine.add_transition('newPersonEntered', 'PersonOut', 'PersonIn', before='durationStats')
 
 
 def build_argparser():
@@ -86,7 +95,8 @@ def infer_on_stream(args, client):
     isImage = False
 
     # Handle the input stream 
-    assert os.path.isfile(args.input)
+    if args.input != 'CAM':
+        assert os.path.isfile(args.input)
     
 
     if args.input == 'CAM':
@@ -95,7 +105,10 @@ def infer_on_stream(args, client):
         isImage = True
 
 
-    
+    last_count = 0
+    total_count = 0
+    start_time = 0
+    durationList = []
 
     # Initialise the class
     infer_network = Network()
@@ -122,6 +135,7 @@ def infer_on_stream(args, client):
         out = None
 
 
+
     #Loop until stream is over
     while cap.isOpened():
         # Read from the video capture 
@@ -146,14 +160,45 @@ def infer_on_stream(args, client):
 
             # Extract any desired stats from the results 
             frame, count = drawBBoxes(frame, result, prob_threshold, w, h)
+          
 
             # Calculate and send relevant information on 
             inf_time_message = "Inference time: {:.3f}ms".format(det_time * 1000)
             cv2.putText(frame, inf_time_message, (15, 15),cv2.FONT_HERSHEY_COMPLEX, 0.5, (200, 10, 10), 1)
 
-           
+            # When new person enters the video
+            if count > last_count:
 
-       
+                frame_state.to_PersonOut()   # re-assuring by Setting Previous person to have moved out.
+                frame_state.newPersonEntered()    #Set the state as new person entered and initialize timer.
+                total_count = total_count + count - last_count
+                client.publish("person", json.dumps({"total": total_count}))
+
+                ''' 
+                log.info('Entered Scene at MS {}'.format(cap.get(cv2.CAP_PROP_POS_MSEC)))
+                log.info('Entered Scene at FRM {}'.format(cap.get(cv2.CAP_PROP_POS_FRAMES)))
+                log.info('Entered Scene at AVI {}'.format(cap.get(cv2.CAP_PROP_POS_AVI_RATIO)))
+                log.info('Frame Rate {}'.format(cap.get(cv2.CAP_PROP_FPS)))
+                
+                // The logic of calculating duration with above properties worked fine.
+                     But realised it may not work in CAM mode.. so need to build a generic logic.
+                '''
+
+            # current_count, total_count and duration to the MQTT server 
+            # Person duration in the video is calculated
+            if count < last_count:
+                duration = float(time.time() - frame_state.getEntrytime())
+                frame_state.to_PersonOut()
+                durationList.append(duration)
+
+                # Publish average duration spent by people to the MQTT server
+                client.publish("person/duration", json.dumps({"duration": round(np.mean(durationList)) }))
+
+            client.publish("person", json.dumps({"count": count}))
+            last_count = count
+
+             # Topic "person": keys of "count" and "total" 
+             # Topic "person/duration": key of "duration" 
             if key_pressed == 27:
                 break
 

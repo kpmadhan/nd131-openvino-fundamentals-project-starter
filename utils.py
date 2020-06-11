@@ -2,6 +2,16 @@ import os
 import logging as log
 import cv2
 import sys
+from constants import coco_category_map as COCO_MAP
+
+log.basicConfig(
+    level=log.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        log.FileHandler("debug.log"),
+        log.StreamHandler()
+    ]
+)
 
 def getMOFiles(model):
     d = dict()
@@ -53,18 +63,32 @@ def getSrcDim(cap):
 
 def drawBBoxes(frame, result, threshold, width, height):
     count = 0
-   
+  
     for box in result[0][0]: # Output shape is 1x1x100x7
-        
         conf = box[2]
         if conf >= threshold:
-            log.info('Detecting: person with probability: %02.2f',   conf)
+
             xmin = int(box[3] * width)
             ymin = int(box[4] * height)
             xmax = int(box[5] * width)
             ymax = int(box[6] * height)
+
+            if int(box[1]) in COCO_MAP:
+                class_name =   COCO_MAP.get(int(box[1]))
+                log.info('- Detected : {} with probability: {:.2f}'.format(class_name,conf))
+            else:
+                class_name = 'Unknown'
+
             cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 255), 1)
+            cv2.putText(frame, "{} {:.2f}".format(class_name, conf), (15, 45),cv2.FONT_HERSHEY_COMPLEX, 0.5, (200, 10, 10), 1)
+            #cv2.putText(frame, "{} {:.2f}".format(class_name, conf), (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 255, 255), 1, cv2.LINE_AA)
             count = count+1
+    '''         
+            log.info('Detected : {} with probability: {:.2f}'.format(class_name,conf))
+            cv2.putText(frame, "{} {:.2f}".format(class_name, conf), (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 255, 255), 1, cv2.LINE_AA)
+            count = count+1
+    '''         
+           
     return frame, count
 
 
