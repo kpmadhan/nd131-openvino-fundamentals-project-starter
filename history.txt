@@ -1,0 +1,16 @@
+  643   python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m model/face-detection-adas-0001/face-detection-adas-0001.xml  -p 0.7 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
+  644  ls
+  645  cd model
+  646  ls
+  647  cd face-detection-adas-0001
+  648  ls
+  649  cd /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader
+  650  ./downloader.py --name face-detection-adas-0001 --output_dir "/Users/madhan.k/Documents/HandsOn/EdgeAI/PeopleCounter/To Submit/project-starter/model/"
+  651  cd "/Users/madhan.k/Documents/HandsOn/EdgeAI/PeopleCounter/To Submit/project-starter"
+  652  ls
+  653  python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m model/intel/face-detection-adas-0001/FP32/face-detection-adas-0001.xml  -p 0.7 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm\n
+  654  python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m model/person-detection-retial-0013/intel/person-detection-retail-0013/FP32/person-detection-retail-0013.xml  -p 0.7 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm\n
+  655  clear
+  656  history
+  657  clear
+  658  history

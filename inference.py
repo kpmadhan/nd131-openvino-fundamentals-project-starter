@@ -52,11 +52,12 @@ class Network:
         return 
 
     def load_model(self, model, device="CPU", cpu_extension=None):
-      
+        
         # Load the model
         log.debug('Initiating IE core....')
         startTime = cv2.getTickCount()
         self.ie = IECore()
+
         self.network = self.ie.read_network(model=utils.getMOFiles(model)['model'], weights=utils.getMOFiles(model)['weights'])
         log.debug('Model metadata read Sucessfully')
         
@@ -73,6 +74,7 @@ class Network:
         log.debug('Initiating Model loading....')
         startTime = cv2.getTickCount()
         self.exec_network = self.ie.load_network(network=self.network, device_name=device,num_requests=0)
+       
         log.debug('Model Loaded in %s seconds' , utils.timeLapse(startTime))
         
         # Get the input layer
@@ -84,7 +86,7 @@ class Network:
 
         # Return the loaded inference engine
         log.debug("IR successfully loaded into Inference Engine.")
-        return self.exec_network
+        return self.exec_network 
 
     def get_input_shape(self):
 

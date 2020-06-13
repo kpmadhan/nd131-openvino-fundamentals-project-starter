@@ -59,37 +59,58 @@ def getCODEC():
 
 def getSrcDim(cap):
     return int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)) , int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+def getSize(filename):
+    st = os.stat(filename)
+    return st.st_size
   
 
-def drawBBoxes(frame, result, threshold, width, height):
+def drawBBoxes(frame, result, threshold, width, height,prev_frame_count,f_n):
+    
     count = 0
-  
     for box in result[0][0]: # Output shape is 1x1x100x7
-        conf = box[2]
-        if conf >= threshold:
-
-            xmin = int(box[3] * width)
-            ymin = int(box[4] * height)
-            xmax = int(box[5] * width)
-            ymax = int(box[6] * height)
-
-            if int(box[1]) in COCO_MAP:
+       
+        if int(box[1]) in COCO_MAP:
                 class_name =   COCO_MAP.get(int(box[1]))
-                log.info('- Detected : {} with probability: {:.2f}'.format(class_name,conf))
-            else:
+        else:
                 class_name = 'Unknown'
 
-            cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 255), 1)
-            cv2.putText(frame, "{} {:.2f}".format(class_name, conf), (15, 45),cv2.FONT_HERSHEY_COMPLEX, 0.5, (200, 10, 10), 1)
-            #cv2.putText(frame, "{} {:.2f}".format(class_name, conf), (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 255, 255), 1, cv2.LINE_AA)
-            count = count+1
-    '''         
-            log.info('Detected : {} with probability: {:.2f}'.format(class_name,conf))
-            cv2.putText(frame, "{} {:.2f}".format(class_name, conf), (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 255, 255), 1, cv2.LINE_AA)
-            count = count+1
-    '''         
-           
-    return frame, count
+        conf = box[2]
+
+        if conf > 0:
+            #log.info('- Detected object {} with probability: {:.2f}'.format(class_name,conf))
+
+            if(class_name == 'person'): #In the current context , our object of interest is person.
+                
+                log.info('** Detected person with probability: {:.2f}'.format(conf))
+               
+                xmin = int(box[3] * width)
+                ymin = int(box[4] * height)
+                xmax = int(box[5] * width)
+                ymax = int(box[6] * height)
+
+                if conf >= threshold:
+
+                    cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 1)
+                    cv2.putText(frame, "{} {:.2f}".format(class_name, conf), (xmin+2, ymin+5),cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 255, 0), 1)
+                    #cv2.putText(frame, "{} {:.2f}".format(class_name, conf), (xmin, ymin), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 255, 255), 1, cv2.LINE_AA)
+                    count = count+1
+
+                if (prev_frame_count != 0):  # To work around a poorly performing model , an intution that if the person was detected in the earlier frame , they may not disappear in the next frame , and probably the confidence turned low
+                    if (prev_frame_count > count and conf >= (0.75 * threshold)): 
+                        cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 255), 1)
+                        cv2.putText(frame, "{} {:.2f}".format(class_name, conf), (xmin+2, ymin+15),cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 255, 255), 1)
+                        f_n = f_n+1
+                        count = prev_frame_count
+                    
+                    if (prev_frame_count > count and conf >= (0.50 * threshold)): 
+                        cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 0, 255), 1)
+                        cv2.putText(frame, "{} {:.2f}".format(class_name, conf), (xmin+2, ymin+15),cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 255), 1)
+                        f_n = f_n+1
+                        count = prev_frame_count
+                    
+
+    return frame, count , f_n
 
 
      

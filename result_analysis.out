@@ -1,0 +1,162 @@
+
+ python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m model/ssd_inception_v2/frozen_inference_graph.xml  -p 0.6 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
+
+SSD Incepetion V2 
+2020-06-12 19:53:52,599 [INFO] ######################################################
+2020-06-12 19:53:52,599 [INFO] # Average Inference Time                                             ::  38.951 ms
+2020-06-12 19:53:52,599 [INFO] # (IR) Model Size   (XML)                                            ::  324.16 kb
+2020-06-12 19:53:52,599 [INFO] # (IR) Model Weight (BIN)                                            ::  95.44 mb
+2020-06-12 19:53:52,599 [INFO] # Total Model Load Time                                              ::  1.171 ms
+2020-06-12 19:53:52,599 [INFO] # Set Probability Threshold                                          ::  0.6
+2020-06-12 19:53:52,600 [INFO] # No. of False Negatives @ 0.75 & 0.5 times of the set threhold      ::  73
+2020-06-12 19:53:52,600 [INFO] # Error_percent in detecting Total ppl                               ::  133.33 %
+2020-06-12 19:53:52,600 [INFO] # Error_percent in average duration                                  ::  -72.22 %
+2020-06-12 19:53:52,600 [INFO] ######################################################
+
+ python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m model/ssd_inception_v2/frozen_inference_graph.xml  -p 0.4 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
+ 
+2020-06-12 19:57:29,967 [INFO] ######################################################
+2020-06-12 19:57:29,968 [INFO] # Average Inference Time                                             ::  39.061 ms
+2020-06-12 19:57:29,968 [INFO] # (IR) Model Size   (XML)                                            ::  324.16 kb
+2020-06-12 19:57:29,968 [INFO] # (IR) Model Weight (BIN)                                            ::  95.44 mb
+2020-06-12 19:57:29,968 [INFO] # Total Model Load Time                                              ::  1.117 ms
+2020-06-12 19:57:29,968 [INFO] # Set Probability Threshold                                          ::  0.4
+2020-06-12 19:57:29,968 [INFO] # No. of False Negatives @ 0.75 & 0.5 times of the set threhold      ::  98
+2020-06-12 19:57:29,968 [INFO] # Error_percent in detecting Total ppl                               ::  200.0 %
+2020-06-12 19:57:29,969 [INFO] # Error_percent in average duration                                  ::  -72.22 %
+2020-06-12 19:57:29,969 [INFO] ######################################################
+
+python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m model/ssd_mobilenet_v1/frozen_inference_graph.xml  -p 0.4 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
+
+SSD ssd_mobilenet_v1 
+2020-06-12 20:00:19,889 [INFO] ######################################################
+2020-06-12 20:00:19,889 [INFO] # Average Inference Time                                             ::  14.163 ms
+2020-06-12 20:00:19,889 [INFO] # (IR) Model Size   (XML)                                            ::  191.35 kb
+2020-06-12 20:00:19,889 [INFO] # (IR) Model Weight (BIN)                                            ::  25.97 mb
+2020-06-12 20:00:19,889 [INFO] # Total Model Load Time                                              ::  0.468 ms
+2020-06-12 20:00:19,890 [INFO] # Set Probability Threshold                                          ::  0.4
+2020-06-12 20:00:19,890 [INFO] # No. of False Negatives @ 0.75 & 0.5 times of the set threhold      ::  141
+2020-06-12 20:00:19,890 [INFO] # Error_percent in detecting Total ppl                               ::  283.33 %
+2020-06-12 20:00:19,890 [INFO] # Error_percent in average duration                                  ::  -83.33 %
+2020-06-12 20:00:19,890 [INFO] ######################################################
+
+python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m model/ssd_mobilenet_v1/frozen_inference_graph.xml  -p 0.7 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
+ 
+2020-06-12 20:02:42,981 [INFO] ######################################################
+2020-06-12 20:02:42,981 [INFO] # Average Inference Time                                             ::  14.435 ms
+2020-06-12 20:02:42,982 [INFO] # (IR) Model Size   (XML)                                            ::  191.35 kb
+2020-06-12 20:02:42,982 [INFO] # (IR) Model Weight (BIN)                                            ::  25.97 mb
+2020-06-12 20:02:42,982 [INFO] # Total Model Load Time                                              ::  0.479 ms
+2020-06-12 20:02:42,982 [INFO] # Set Probability Threshold                                          ::  0.7
+2020-06-12 20:02:42,982 [INFO] # No. of False Negatives @ 0.75 & 0.5 times of the set threhold      ::  170
+2020-06-12 20:02:42,982 [INFO] # Error_percent in detecting Total ppl                               ::  133.33 %
+2020-06-12 20:02:42,982 [INFO] # Error_percent in average duration                                  ::  -83.33 %
+2020-06-12 20:02:42,982 [INFO] ######################################################
+
+
+ssd_mobilenet_v2
+2020-06-12 17:44:59,503 [INFO] ######################################################
+2020-06-12 17:44:59,504 [INFO] # Average Inference Time                                             ::  20.408 ms
+2020-06-12 17:44:59,504 [INFO] # (IR) Model Size   (XML)                                            ::  262.75 kb
+2020-06-12 17:44:59,504 [INFO] # (IR) Model Weight (BIN)                                            ::  64.16 mb
+2020-06-12 17:44:59,504 [INFO] # Total Model Load Time                                              ::  0.731 ms
+2020-06-12 17:44:59,504 [INFO] # Set Probability Threshold                                          ::  0.7
+2020-06-12 17:44:59,504 [INFO] # No. of False Negatives @ 0.75 & 0.5 times of the set threhold      ::  266
+2020-06-12 17:44:59,504 [INFO] # Error_percent in detecting Total ppl                               ::  133.33 %
+2020-06-12 17:44:59,505 [INFO] # Error_percent in average duration                                  ::  -72.22 %
+2020-06-12 17:44:59,505 [INFO] ######################################################
+
+2020-06-12 17:42:00,162 [INFO] ######################################################
+2020-06-12 17:42:00,162 [INFO] # Average Inference Time                                             ::  20.215 ms
+2020-06-12 17:42:00,163 [INFO] # (IR) Model Size   (XML)                                            ::  262.75 kb
+2020-06-12 17:42:00,163 [INFO] # (IR) Model Weight (BIN)                                            ::  64.16 mb
+2020-06-12 17:42:00,163 [INFO] # Total Model Load Time                                              ::  0.714 ms
+2020-06-12 17:42:00,163 [INFO] # Set Probability Threshold                                          ::  0.4
+2020-06-12 17:42:00,163 [INFO] # No. of False Negatives @ 0.75 & 0.5 times of the set threhold      ::  63
+2020-06-12 17:42:00,163 [INFO] # Error_percent in detecting Total ppl                               ::  150.0 %
+2020-06-12 17:42:00,163 [INFO] # Error_percent in average duration                                  ::  -66.67 %
+2020-06-12 17:42:00,164 [INFO] ######################################################
+
+
+python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m model/ssd_restnet50_v1/frozen_inference_graph.xml  -p 0.7 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
+ssd_restnet50_v1
+2020-06-12 20:25:35,915 [INFO] ######################################################
+2020-06-12 20:25:35,915 [INFO] # Average Inference Time                                             ::  703.822 ms
+2020-06-12 20:25:35,915 [INFO] # (IR) Model Size   (XML)                                            ::  365.05 kb
+2020-06-12 20:25:35,915 [INFO] # (IR) Model Weight (BIN)                                            ::  197.13 mb
+2020-06-12 20:25:35,915 [INFO] # Total Model Load Time                                              ::  2.056 ms
+2020-06-12 20:25:35,916 [INFO] # Set Probability Threshold                                          ::  0.7
+2020-06-12 20:25:35,916 [INFO] # No. of False Negatives @ 0.75 & 0.5 times of the set threhold      ::  590
+2020-06-12 20:25:35,916 [INFO] # Error_percent in detecting Total ppl                               ::  16.67 %
+2020-06-12 20:25:35,916 [INFO] # Error_percent in average duration                                  ::  305.56 %
+2020-06-12 20:25:35,916 [INFO] ######################################################
+
+python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m model/ssdlite_mobilenet_v2/frozen_inference_graph.xml  -p 0.7 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
+
+ssdlite_mobilenet_v2
+2020-06-12 20:29:44,220 [INFO] ######################################################
+2020-06-12 20:29:44,220 [INFO] # Average Inference Time                                             ::  20.312 ms
+2020-06-12 20:29:44,220 [INFO] # (IR) Model Size   (XML)                                            ::  263.25 kb
+2020-06-12 20:29:44,221 [INFO] # (IR) Model Weight (BIN)                                            ::  64.16 mb
+2020-06-12 20:29:44,221 [INFO] # Total Model Load Time                                              ::  1.291 ms
+2020-06-12 20:29:44,221 [INFO] # Set Probability Threshold                                          ::  0.7
+2020-06-12 20:29:44,221 [INFO] # No. of False Negatives @ 0.75 & 0.5 times of the set threhold      ::  266
+2020-06-12 20:29:44,221 [INFO] # Error_percent in detecting Total ppl                               ::  133.33 %
+2020-06-12 20:29:44,221 [INFO] # Error_percent in average duration                                  ::  -72.22 %
+
+python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m model/pedestrian-detection-adas-0002/intel/pedestrian-detection-adas-0002/FP32/pedestrian-detection-adas-0002.xml  -p 0.7 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
+2020-06-13 18:33:36,068 [INFO] ######################################################
+2020-06-13 18:33:36,069 [INFO] # Average Inference Time                                             ::  16.175 ms
+2020-06-13 18:33:36,069 [INFO] # (IR) Model Size   (XML)                                            ::  240.27 kb
+2020-06-13 18:33:36,069 [INFO] # (IR) Model Weight (BIN)                                            ::  4.44 mb
+2020-06-13 18:33:36,069 [INFO] # Total Model Load Time                                              ::  0.430 ms
+2020-06-13 18:33:36,069 [INFO] # Set Probability Threshold                                          ::  0.7
+2020-06-13 18:33:36,069 [INFO] # No. of False Negatives @ 0.75 & 0.5 times of the set threhold      ::  576
+2020-06-13 18:33:36,069 [INFO] # Error_percent in detecting Total ppl                               ::  4216.67 %
+2020-06-13 18:33:36,069 [INFO] # Error_percent in average duration                                  ::  -77.78 %
+2020-06-13 18:33:36,070 [INFO] ######################################################
+
+
+
+python main.py -i resources/Pedestrian_Detect_2_1_1.mp4 -m model/person-detection-retail-0013/intel/person-detection-retail-0013/FP32/person-detection-retail-0013.xml  -p 0.7 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
+Person Detection Retail 0013
+2020-06-13 19:12:17,314 [INFO] ######################################################
+2020-06-13 19:12:17,314 [INFO] # Average Inference Time                                             ::  21.278 ms
+2020-06-13 19:12:17,315 [INFO] # (IR) Model Size   (XML)                                            ::  349.96 kb
+2020-06-13 19:12:17,315 [INFO] # (IR) Model Weight (BIN)                                            ::  2.76 mb
+2020-06-13 19:12:17,315 [INFO] # Total Model Load Time                                              ::  1.412 ms
+2020-06-13 19:12:17,316 [INFO] # Set Probability Threshold                                          ::  0.7
+2020-06-13 19:12:17,316 [INFO] # No. of False Negatives @ 0.75 & 0.5 times of the set threhold      ::  18
+2020-06-13 19:12:17,316 [INFO] # Error_percent in detecting Total ppl                               ::  16.67 %
+2020-06-13 19:12:17,317 [INFO] # Error_percent in average duration                                  ::  -16.67 %
+2020-06-13 19:12:17,317 [INFO] ######################################################
+
+
+
+python main.py -i resources/LightOFF_Pedestrian_Detect_2_1_1.mp4 -m model/person-detection-retail-0013/intel/person-detection-retail-0013/FP32/person-detection-retail-0013.xml  -p 0.7 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
+2020-06-13 20:10:45,558 [INFO] ######################################################
+2020-06-13 20:10:45,558 [INFO] # Average Inference Time                                             ::  18.834 ms
+2020-06-13 20:10:45,558 [INFO] # (IR) Model Size   (XML)                                            ::  349.96 kb
+2020-06-13 20:10:45,559 [INFO] # (IR) Model Weight (BIN)                                            ::  2.76 mb
+2020-06-13 20:10:45,559 [INFO] # Total Model Load Time                                              ::  1.242 ms
+2020-06-13 20:10:45,559 [INFO] # Set Probability Threshold                                          ::  0.7
+2020-06-13 20:10:45,559 [INFO] # No. of False Negatives @ 0.75 & 0.5 times of the set threhold      ::  176
+2020-06-13 20:10:45,559 [INFO] # Error_percent in detecting Total ppl                               ::  116.67 %
+2020-06-13 20:10:45,559 [INFO] # Error_percent in average duration                                  ::  -66.67 %
+2020-06-13 20:10:45,559 [INFO] ######################################################
+
+
+python main.py -i resources/Lightexposed_Pedestrian_Detect_2_1_1.mp4 -m model/person-detection-retail-0013/intel/person-detection-retail-0013/FP32/person-detection-retail-0013.xml  -p 0.7 | ffmpeg -v warning -f rawvideo -pixel_format bgr24 -video_size 768x432 -framerate 24 -i - http://0.0.0.0:3004/fac.ffm
+
+2020-06-13 20:13:28,045 [INFO] ######################################################
+2020-06-13 20:13:28,045 [INFO] # Average Inference Time                                             ::  19.666 ms
+2020-06-13 20:13:28,046 [INFO] # (IR) Model Size   (XML)                                            ::  349.96 kb
+2020-06-13 20:13:28,046 [INFO] # (IR) Model Weight (BIN)                                            ::  2.76 mb
+2020-06-13 20:13:28,046 [INFO] # Total Model Load Time                                              ::  1.320 ms
+2020-06-13 20:13:28,046 [INFO] # Set Probability Threshold                                          ::  0.7
+2020-06-13 20:13:28,046 [INFO] # No. of False Negatives @ 0.75 & 0.5 times of the set threhold      ::  77
+2020-06-13 20:13:28,046 [INFO] # Error_percent in detecting Total ppl                               ::  133.33 %
+2020-06-13 20:13:28,046 [INFO] # Error_percent in average duration                                  ::  -61.11 %
+2020-06-13 20:13:28,047 [INFO] ######################################################
+
+
