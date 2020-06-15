@@ -1,7 +1,9 @@
-# Project 1 - People Counter App
+# People Counter App using OpenVino Toolkit
 
 ## Summary 
-In this project, test was carried out to find a person detection model and convert it to an Intermediate Representation for use with the Model Optimizer. Utilizing the Inference Engine, performed the inference on the input video (`resources/Pedestrian_Detect_2_1_1.mp4`) and identified a reasonable model for this use case.
+In this project, test was carried out to find a better performing person detection model and convert it to an Intermediate Representation for use with the Model Optimizer. 
+
+Utilizing the Inference Engine, performed the inference on the input video (`resources/Pedestrian_Detect_2_1_1.mp4`) and measured few metrics to find a reasonable model specific to this use case.
 
 To develop the present project, tests were carried out with the following models,
 
@@ -11,12 +13,12 @@ To develop the present project, tests were carried out with the following models
 - ssd restnet_50 v1 
 - ssdlite mobilenet v2 
 
-And also tested against some of the Intel® pre-trained models , namely
+And also tested against some of the Intel® pre-trained models , like
 
 - Pedestrian detection adas 002
 - Person detection retail 0013
 
-And the following write up explains the implementation approach , comparison of the model performance , a short study on the impact of external environment (like lighting) and the outcome.
+The following write up explains the implementation approach , comparison of the model performance , a short study on the impact of external environment (like lighting) and the outcome.
 
 ## Basic Execution / Requirement.
 
@@ -70,7 +72,7 @@ As a part of the inital model research , the following link helped in knowing di
 - [ssd restnet_50 v1](https://download.tensorflow.org/models/object_detection/faster_rcnn_resnet50_coco_2018_01_28.tar.gz)
 - [ssdlite mobilenet v2](https://download.tensorflow.org/models/object_detection/ssdlite_mobilenet_v2_coco_2018_05_09.tar.gz)
 
-Following the reference from [Converting TensorFlow* Object Detection API Models](https://docs.openvinotoolkit.org/latest/_docs_MO_DG_prepare_model_convert_model_tf_specific_Convert_Object_Detection_API_Models.html) , the following steps where followed to convert the above models to an  Intermediate Representation with the Model Optimizer
+Following the reference from [Converting TensorFlow* Object Detection API Models](https://docs.openvinotoolkit.org/latest/_docs_MO_DG_prepare_model_convert_model_tf_specific_Convert_Object_Detection_API_Models.html) , below steps where followed to convert the models to an  Intermediate Representation with the Model Optimizer
 
 
 * Step 1: Download the model and Untar(e.g.,) 
@@ -101,10 +103,10 @@ After the above step , the following files will be generated upon a sucessful ex
   * frozen_inference_graph.xml
 ```
 
-These two files are the ones that will be used to run over inference on the input stream.
+These two files are the ones that will be used to run the inference on the input stream.
 
 
-Incase of an pretrained model (Pedestrian detection adas 002 , Person detection retail 0013 in this context) , the above artefacts ( .bin & .xml) are pre-built and optimized, and hence are ready to use directly.
+Incase of an pretrained model ( in this context Pedestrian detection adas 002 and Person detection retail 0013 where tested) , the above artefacts ( .bin & .xml) are pre-built and optimized, and hence are ready to use directly.
 
 ## Comparing Model Performance
 With the above said approach , IR for various models where created and upon execution , the following was the result. 
