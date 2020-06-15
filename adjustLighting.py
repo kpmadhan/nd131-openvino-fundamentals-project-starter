@@ -74,7 +74,7 @@ def adjustLighting(args):
 
         
     print(args.light)
-    out = cv2.VideoWriter('Pedestrian_Detect_2_1_1.mp4'.format(args.light),utils.getCODEC(), cap.get(cv2.CAP_PROP_FPS), (w,h))
+    out = cv2.VideoWriter('Pedestrian_Detect_2_1_1.mp4',utils.getCODEC(), cap.get(cv2.CAP_PROP_FPS), (w,h))
 
 
     #Loop until stream is over
@@ -89,7 +89,7 @@ def adjustLighting(args):
         if (args.light is "off"):
             gamma = 0.1
         elif(args.light is "on"):
-           gamma = 1.5
+            gamma = 1.5
         elif(args.light is "exposed"):
             gamma = 2.5
         
